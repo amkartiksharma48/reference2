@@ -1,0 +1,20 @@
+check existing git config-->
+git config --global user.name
+git config --global user.email
+
+set you own-->
+
+git config --global user.name "Your Name"
+git config --global user.email "your-email@gmail.com"
+
+verify--> git config --global --list
+
+GIT TOKEN--> (wsl git)
+
+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
+
+
+TO DOWNLOAD JENKINS--> https://www.jenkins.io/doc/book/installing/linux/#debianubuntu
+                       cat /var/lib/jenkins/secrets/initialAdminPassword
+
+ 

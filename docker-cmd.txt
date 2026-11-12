@@ -1,0 +1,125 @@
+docker run
+docker build
+docker rmi--> To delete images
+docker ps--> To list out all the running containers
+docker ps -a  --> To list out ALL the containers
+docker rm   --> To delete a docker container
+docker run -d -p 8080:80 --name mycontainer nginx:latest  --> CREATE A CONTAINER
+docker exec -it mycontainer /bin/bash
+docker build -t test:1.0 .
+
+
+TO RUN THESE PRE BUILT IMAGES AS CONTAINERS--?
+1)ubuntu-> docker run -it ubuntu
+2)nginx-> docker run -d -p 8080:80 --name mycontainer nginx:latest
+3)Mysql-> docker run -d -e MYSQL_ROOT_PASSWORD= 1234 MySQL
+  to access the container docker exec -it CONTAINER_ID mysql -uroot -p
+4)mongo/nosql-> docker run -d -p 27017:27017 mongo
+5)Python-> docker run -it python
+
+----------------------------------------------------------------------------------------------------------
+
+docker container prune  -> deletes all stopped containers
+docker image prune -a    ->deletes all unused images
+docker rename <old_name> <new_name>   -> to rename an existing container
+docker logs <container name>   --> logs of a container
+docker logs -f mycontainer   -->running logs of a running container
+
+---------------------------------------------------------------------------------------------------------
+DOCKER NETWORKING--> 
+
+docker network ls
+docker network create mynetwork
+
+to run a container inside a custom network, just use --network mynetwork in the run command
+
+to create a MySQL container--> docker run  -d   --name   my-mysql -e  MYSQL_ROOT_PASSWORD=root123 -v  mysql-data:/var/lib/mysql -p  3306:3306 mysql:8
+
+to enter a MySQL container-->   docker exec -it my-mysql mysql -uroot -proot123
+
+DOCKER VOLUME-->
+
+to create a docker volume   docker volume create 
+     to see all volumes     docker volume ls
+to inspect an existing volume        docker volume inspect myvolume
+to remove a volume           docker volume rm myvol
+                             docker volume prune
+                            
+
+docker run -v myvolume:/var/lib/MySQL
+or you can also mount it on a local folder
+docker run -v /home/user/mysql-data:/var/lib/MySQL
+or only path(anonymous volume)
+-v /var/lib/MySQL
+
+same with nginx
+Type	Command
+Named volume	-v web-data:/usr/share/nginx/html
+Bind mount	-v /home/user/html:/usr/share/nginx/html
+Anonymous volume	-v /usr/share/nginx/html
+
+
+
+DOCKER IMAGE CREATION-->
+
+mkdir docker-demo
+cd docker-demo
+vim app.py
+print("hello world")
+vim Dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY app.py .
+CMD ["python","app.py"]
+
+docker build -t myimage .
+
+
+TO PUSH AN IMAGE TO DOCKER HUB-->
+
+docker login
+docker tag myimage kartiksharma48/myimage:1.0
+docker push kartiksharma48/myimage:1.0
+ 
+
+Create a java app--> FROM  		eclipse-temurin:17-jdk-alpine
+WORKDIR	/app
+COPY		HelloWorld.java      /app
+RUN		javac   HelloWorld.java
+CMD		["java", "HelloWorld"]
+
+public class HelloWorld {
+     public static void main(String[] args) {
+          System.out.println (“Hello, World!”);
+     }
+}
+
+
+TO DOWNLOAD A DOCKER IMAGE AND INSTALL IT IN A TRANSFERABLE FORM-->
+
+docker pull ubuntu
+docker save ubuntu -o ubuntu.tar
+to load that file in another computer   docker load -i ubuntu.tar
+
+
+TO STOP ALL CONTAINERS AT ONCE-->
+
+docker stop $(docker ps -a -q)
+
+TO REMOVE ALL CONTAINERS AT ONCE-->
+
+docker rm $(docker ps -a -q)
+
+Create a C app-->   
+
+
+FROM gcc:latest
+
+WORKDIR /app
+
+COPY add.c .
+
+RUN gcc add.c -o add
+
+CMD ["./add"]
+ 
